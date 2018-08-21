@@ -1,26 +1,27 @@
 #!/usr/bin/python
 # coding: UTF-8
 
-"""This script parse stock info"""
-
 import tushare as ts
-import pymongo
-import json
+import matplotlib.pyplot as plt
+import numpy as np
+import talib
 
-def get_all_price(code_list):
-    '''process all stock'''
-    df = ts.get_realtime_quotes(code_list)
-    print(df)
+df=ts.get_k_data('300648', start='2018-07-01', end='2018-08-21')
+close = [float(x) for x in df['close']]
+# 调用talib计算指数移动平均线的值
+df['EMA12'] = talib.EMA(np.array(close), timeperiod=6)
+df['EMA26'] = talib.EMA(np.array(close), timeperiod=12)
+
+# 调用talib计算MACD指标
+macd,signal,hist = talib.MACD(np.array(close),
+                                      fastperiod=6,
+                                      slowperiod=12,
+                                      signalperiod=9)
 
 
-    conn = pymongo.MongoClient('10.10.1.169', port=27017,tz_aware=False)
-    db = conn.get_database("admin")
-    db.authenticate("root", "5211314")
-    db = conn.get_database("stock")
-    db.tickdata.insert(json.loads(df.to_json(orient='records')))
-
-if __name__ == '__main__':
-    STOCK = ['300648',
-             '601668']
-
-    get_all_price(STOCK)
+index = 0
+for item in macd:
+    tmpMacd = macd[index]
+    if not np.isnan(tmpMacd):
+        print("\n DIF ="+str(macd[index])+"\n DEA ="+str(signal[index])+" \n MACD="+str(hist[index]))
+    index += 1
