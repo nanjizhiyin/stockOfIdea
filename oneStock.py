@@ -2,11 +2,7 @@
 # coding: UTF-8
 
 import tushare as ts
-import numpy as np
-import pandas as pd
-import talib
 import stockstats
-import stockMacd
 
 def analysisStock( stockCode, stockName ):
 
@@ -19,6 +15,7 @@ def analysisStock( stockCode, stockName ):
     deaList = stockStat.get('macds')
 
     # 计算macd
+    # 当天和前天的数据
     dif1 = 0
     dea1 = 0
     dif2 = 0
@@ -42,18 +39,21 @@ def analysisStock( stockCode, stockName ):
     # 买入等级
     buyLevel = 0
 
+    # 邮件内容
+    mailText = stockCode + '--' + stockName
+    c1 = dea1 - dif1
+    c2 = dea2 - dif2
     # MACD将要发生金叉
-    if dif1 < 0 and dif1 - dea1 > dif2 - dea2:
+    if dif1 < 0 and c1 < c2:
         buyLevel += 1
-    else:
-        return
+        mailText += "--MACD将金叉"
 
     # 计算KDJ
     kdjk = stockStat['kdjk']
     kdjd = stockStat['kdjd']
     # kdjj = stockStat['kdjj']
 
-
+    # 当天和前天的数据
     k1 = 0
     d1 = 0
     k2 = 0
@@ -74,19 +74,14 @@ def analysisStock( stockCode, stockName ):
     # KD与前一天相比差值变小了
 
     # 计算差值
-    c1 = k1 - d1
-    c2 = k2 - d2
+    c1 = d1 - k1
+    c2 = d2 - k2
 
     # kd差值在减小,将要金叉
     if d1 > k1 and c1 < c2:
         buyLevel += 1
-    else:
-        return
+        mailText += "--KDJ将金叉"
 
-    # 邮件内容
-    mailText = stockCode + '--' + stockName
-    mailText += "--MACD指标满足"
-    mailText += "--KDJ指标满足"
 
     if buyLevel == 2 :
         print(mailText)

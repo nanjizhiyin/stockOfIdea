@@ -25,6 +25,6 @@ def stockList():
         mail.sendMail("没有可买的股票")
 
 if __name__ == '__main__':
-    # stockList()
-    returnStr = oneStock.analysisStock('300648','test')
-    print(returnStr)
+    stockList()
+    # returnStr = oneStock.analysisStock('300648','test')
+    # print(returnStr)
