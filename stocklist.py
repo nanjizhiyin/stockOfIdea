@@ -14,6 +14,12 @@ def stockList():
     # 输出一个字段
     for index, row in df.iterrows():
         print(index +"--"+ row['name'])
+        # 市盈率
+        pe = row['pe']
+        if pe > 50:
+            print('市盈率大于50')
+            continue
+
         returnStr = oneStock.analysisStock(index,row['name'])
         if returnStr != None:
             mailText += returnStr+'\n'
