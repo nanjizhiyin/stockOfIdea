@@ -35,34 +35,6 @@ def analysisStock( stockCode, stockName ):
         buyLevel += 1
         mailText += "--MACD下行"
 
-    # 计算dif,dea
-    # 当天和前天的数据
-    # difList = stockStat.get('macd')
-    # deaList = stockStat.get('macds')
-    # difList = difList.tail(2)
-    # deaList = deaList.tail(2)
-    # dif1 = 0
-    # dif2 = 0
-    # dea1 = 0
-    # dea2 = 0
-    # forIndex = 0
-    # for index in difList.index:
-    #     if forIndex == 0:
-    #         dif2 = difList[index]
-    #         dea2 = deaList[index]
-    #     elif forIndex == 1:
-    #         dif1 = difList[index]
-    #         dea1 = deaList[index]
-    #
-    #     forIndex += 1
-    #
-    # # 如果macd在负数.与前一天相比增大了,买入信号
-    # c1 = dea1 - dif1
-    # c2 = dea2 - dif2
-    # # MACD将要发生金叉
-    # if dif1 < 0 and c1 < c2:
-    #     buyLevel += 1
-    #     mailText += "--MACD将金叉"
 
     # 计算KDJ
     kdjk = stockStat['kdjk']
@@ -77,14 +49,10 @@ def analysisStock( stockCode, stockName ):
     k1 = 0
     d1 = 0
     j1 = 0
-    # k2 = 0
-    # d2 = 0
     j2 = 0
     forIndex = 0
     for index in kdjj.index:
         if forIndex == 0:
-            # k2 = kdjk[index]
-            # d2 = kdjd[index]
             j2 = kdjj[index]
         elif forIndex == 1:
             k1 = kdjk[index]
