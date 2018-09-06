@@ -2,9 +2,8 @@
 # coding: UTF-8
 
 import tushare as ts
-import oneStock
+import stockOne
 import mail
-import string
 
 def stockList():
     # 股票列表
@@ -13,6 +12,8 @@ def stockList():
     kPe = 50
     # 邮件内容
     mailText = ""
+    # 计算个数
+    mNumber = 0
     # 输出一个字段
     for index, row in df.iterrows():
         print(index +"--"+ row['name'])
@@ -26,12 +27,14 @@ def stockList():
             print("抛弃st")
             continue
 
-        returnStr = oneStock.analysisStock(index,name)
+        returnStr = stockOne.analysisStock(index, name)
         if returnStr != None:
             mailText += returnStr+'\n'
+            mNumber += 1
 
 
     if mailText != "" :
+        print("找到"+str(mNumber)+"个")
         mail.sendMail(mailText)
     else:
         mail.sendMail("没有可买的")
