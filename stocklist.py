@@ -4,8 +4,60 @@
 import tushare as ts
 import stockOne
 import mail
+import csv
 
 def stockList():
+
+    # 盈利的code
+    profitList = []
+    csv_reader = csv.reader(open("report_data.csv",'r', encoding='UTF-8'))
+    index = 0
+    for row in csv_reader:
+        if index == 0:
+            index = 1
+            continue
+
+        code = row[1]
+        # print(code)
+
+        # 每股收益
+        eps = row[3]
+        if eps:
+            eps = float(eps)
+        else:
+            eps = 0
+
+        # 每股收益同比(%)
+        eps_yoy = row[4]
+        if eps_yoy:
+            eps_yoy = float(eps_yoy)
+        else:
+            eps_yoy = 0
+
+        # 净资产收益率
+        roe = row[6]
+        if roe:
+           roe = float(roe)
+        else:
+            roe = 0
+
+        # 净利率
+        net_profits = row[8]
+        if net_profits:
+            net_profits = float(net_profits)
+        else:
+            net_profits = 0
+
+        # 净利润同比(%)
+        profits_yoy = row[9]
+        if profits_yoy:
+            profits_yoy = float(profits_yoy)
+        else:
+            profits_yoy = 0
+
+        if eps > 0 and eps_yoy > 0 and roe > 0 and net_profits > 0 and profits_yoy > 0:
+            profitList.append(code)
+
     # 股票列表
     df = ts.get_stock_basics()
     # 市盈率
@@ -17,6 +69,9 @@ def stockList():
     # 输出一个字段
     for index, row in df.iterrows():
         print(index +"--"+ row['name'])
+        if index not in profitList:
+            print('上一季度没有盈利')
+            continue
         # 市盈率
         pe = row['pe']
         if pe > kPe:

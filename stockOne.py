@@ -37,7 +37,7 @@ def analysisStock( stockCode, stockName ):
         elif forIndex == 1:
             macd1 = macdList[index]
         forIndex += 1
-    if macd1 < -0.2 and dif1 < 0 and dea1 < 0 and macd1 < macd2:
+    if macd1 < -0.1 and dif1 < 0 and dea1 < 0 and macd1 < macd2:
         buyLevel += 1
         mailText += "--MACD下行"
 
