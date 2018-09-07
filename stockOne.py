@@ -20,10 +20,16 @@ def analysisStock( stockCode, stockName ):
     # MACD
     # 计算macd
 
+    difList = stockStat.get('macd')
+    deaList = stockStat.get('macds')
     macdList = stockStat.get('macdh')
+    difList = difList.tail(1)
+    deaList = deaList.tail(1)
     macdList = macdList.tail(2)
     macd1 = 0
     macd2 = 0
+    dif1 = difList[0]
+    dea1 = deaList[0]
     forIndex = 0
     for index in macdList.index:
         if forIndex == 0:
@@ -31,7 +37,7 @@ def analysisStock( stockCode, stockName ):
         elif forIndex == 1:
             macd1 = macdList[index]
         forIndex += 1
-    if macd1 < 0 and macd1 < macd2:
+    if macd1 < -0.2 and dif1 < 0 and dea1 < 0 and macd1 < macd2:
         buyLevel += 1
         mailText += "--MACD下行"
 
