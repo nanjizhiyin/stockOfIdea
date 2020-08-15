@@ -4,7 +4,7 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
-def sendMail( text ):
+def sendMail(subject, text ):
     # 第三方 SMTP 服务
     mail_host="smtp.163.com"  #设置服务器
     mail_user="nanjizhiyin@163.com"    #用户名
@@ -17,7 +17,6 @@ def sendMail( text ):
     message['From'] = sender   # 发送者
     message['To'] =  ";".join(receivers)        # 接收者
 
-    subject = '可以买了'
     message['Subject'] = Header(subject, 'utf-8')
 
     try:
